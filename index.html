@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yanchen Chen · Projects</title>
+    <meta name="description" content="Projects by Yanchen Chen that run in the browser: a Sudoku solver that reads photos, and an ink-painting remake of Romance of the Three Kingdoms 3. Yanchen Chen 的项目：拍照解数独、水墨风三国策略游戏。">
+    <link rel="canonical" href="https://chenyanchen.github.io/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Yanchen Chen · Projects">
+    <meta property="og:description" content="A Sudoku solver that reads photos, and an ink-painting Three Kingdoms strategy game, both in the browser.">
+    <meta property="og:url" content="https://chenyanchen.github.io/">
+    <meta property="og:image" content="https://chenyanchen.github.io/img/sango3-web.webp">
+    <meta name="theme-color" content="#f6f3ec">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231f2937'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='17' fill='%23f6f3ec' text-anchor='middle'%3EYC%3C/text%3E%3C/svg%3E">
+    <style>
+        :root {
+            --bg: #f6f3ec;
+            --card: #fffdf8;
+            --text: #1f2937;
+            --muted: #6b7280;
+            --line: #e7e1d4;
+            --accent: #b4442f;
+            --chip: #efe9dc;
+        }
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme="light"]) {
+                --bg: #14161a;
+                --card: #1c1f24;
+                --text: #e9e6df;
+                --muted: #9aa0a8;
+                --line: #2b2f36;
+                --accent: #e07a5f;
+                --chip: #262a31;
+            }
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            line-height: 1.65;
+        }
+        .wrap { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
+        header { padding: 72px 0 40px; }
+        .top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; font-size: 0.95rem; }
+        .top a, .lang button { color: var(--muted); text-decoration: none; }
+        .lang button { background: none; border: none; font: inherit; cursor: pointer; padding: 4px 6px; }
+        .lang button[aria-pressed="true"] { color: var(--text); font-weight: 600; }
+        h1 { font-family: Georgia, "Songti SC", "STSong", serif; font-size: clamp(2.2rem, 6vw, 3.4rem); font-weight: 600; letter-spacing: 0.5px; line-height: 1.15; }
+        .intro { margin-top: 14px; color: var(--muted); font-size: 1.15rem; max-width: 40em; }
+        .projects { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; padding-bottom: 64px; }
+        .card {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .card:hover { transform: translateY(-3px); box-shadow: 0 14px 40px rgba(0, 0, 0, 0.08); }
+        .shot { display: block; aspect-ratio: 16 / 10; overflow: hidden; border-bottom: 1px solid var(--line); }
+        .shot img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .body { padding: 22px 24px 24px; display: flex; flex-direction: column; flex: 1; }
+        h2 { font-size: 1.35rem; line-height: 1.3; }
+        h2 small { display: block; font-size: 0.9rem; font-weight: 400; color: var(--muted); margin-top: 2px; }
+        .desc { margin-top: 10px; color: var(--muted); flex: 1; }
+        .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+        .chips span { font-size: 0.8rem; background: var(--chip); padding: 3px 10px; border-radius: 999px; color: var(--muted); }
+        .links { display: flex; gap: 12px; margin-top: 20px; }
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 9px 18px; border-radius: 10px; font-size: 0.95rem; font-weight: 600; text-decoration: none;
+        }
+        .btn.primary { background: var(--accent); color: #fff; }
+        .btn.ghost { border: 1px solid var(--line); color: var(--text); }
+        footer { border-top: 1px solid var(--line); padding: 28px 0 40px; color: var(--muted); font-size: 0.9rem; }
+        footer a { color: inherit; }
+        [data-lang] { display: none; }
+        html[lang="zh-Hans"] [data-lang="zh"], html[lang="en"] [data-lang="en"] { display: revert; }
+        @media (max-width: 720px) {
+            header { padding: 40px 0 28px; }
+            .top { margin-bottom: 28px; }
+            .projects { grid-template-columns: 1fr; gap: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <header>
+            <div class="top">
+                <a href="https://github.com/chenyanchen">github.com/chenyanchen</a>
+                <div class="lang" role="group" aria-label="Language">
+                    <button type="button" data-set-lang="zh-Hans">中文</button>
+                    <button type="button" data-set-lang="en">English</button>
+                </div>
+            </div>
+            <h1><span data-lang="zh">Yanchen Chen 的项目</span><span data-lang="en">Yanchen Chen’s projects</span></h1>
+            <p class="intro">
+                <span data-lang="zh">打开浏览器就能用的小作品，代码都开源在 GitHub。</span>
+                <span data-lang="en">Things I build that run in the browser. All open source on GitHub.</span>
+            </p>
+        </header>
+
+        <main class="projects">
+            <article class="card">
+                <a class="shot" href="/sudoku-solver/">
+                    <img src="img/sudoku-solver.webp" width="960" height="600" alt="A photo of a Sudoku on a laptop screen next to the solved grid">
+                </a>
+                <div class="body">
+                    <h2><span data-lang="zh">数独求解器</span><span data-lang="en">Sudoku Solver</span>
+                        <small><span data-lang="zh">Sudoku Solver</span><span data-lang="en">数独求解器</span></small></h2>
+                    <p class="desc">
+                        <span data-lang="zh">拍一张报纸、书上的数独，或者截一张 App 的图，约 1 秒出答案；没有图片也能手动输入。OpenCV 与角点热力图 CNN 找网格，3.8 万参数的 CNN 读数字，用唯一解来检验识别结果。</span>
+                        <span data-lang="en">Snap a puzzle from a newspaper, a book or an app and get the solution in about a second, or type it in. OpenCV and a corner-heatmap CNN find the grid, a 38K-parameter CNN reads the digits, and the unique solution checks the reading.</span>
+                    </p>
+                    <div class="chips"><span>Computer vision</span><span>PyTorch → ONNX</span><span>FastAPI</span><span>PWA</span></div>
+                    <div class="links">
+                        <a class="btn primary" href="/sudoku-solver/" data-href-zh="/sudoku-solver/zh/"><span data-lang="zh">试一试</span><span data-lang="en">Try it</span></a>
+                        <a class="btn ghost" href="https://github.com/chenyanchen/sudoku-solver"><span data-lang="zh">源代码</span><span data-lang="en">Source</span></a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="card">
+                <a class="shot" href="/sango3-web/">
+                    <img src="img/sango3-web.webp" width="960" height="600" alt="Title screen of 三国墨英传: ink-painted mountains, a fortress and a red sun">
+                </a>
+                <div class="body">
+                    <h2>三国墨英传<small><span data-lang="zh">水墨风三国策略游戏</span><span data-lang="en">An ink-painting Three Kingdoms strategy game</span></small></h2>
+                    <p class="desc">
+                        <span data-lang="zh">玩法复刻《三国群英传3》，内政、外交、野战、百人战、单挑都已实现。画面、音乐和数据全部由代码生成，不含原版内容；有原版安装包的话，也可以在浏览器本地导入原版素材。电脑、手机、平板都能玩。</span>
+                        <span data-lang="en">A browser remake of the gameplay of Romance of the Three Kingdoms: Heroes 3 (2002), with domestic affairs, diplomacy, field battles, hundred-soldier battles and duels. Art, music and data are generated by code; owners of the original can import its assets locally. Plays on desktop, phone and tablet.</span>
+                    </p>
+                    <div class="chips"><span>TypeScript</span><span>PixiJS / WebGL</span><span>Procedural art</span></div>
+                    <div class="links">
+                        <a class="btn primary" href="/sango3-web/"><span data-lang="zh">开始游戏</span><span data-lang="en">Play</span></a>
+                        <a class="btn ghost" href="https://github.com/chenyanchen/sango3-web"><span data-lang="zh">源代码</span><span data-lang="en">Source</span></a>
+                    </div>
+                </div>
+            </article>
+        </main>
+
+        <footer>
+            <p>© Yanchen Chen · <a href="https://github.com/chenyanchen">GitHub</a></p>
+        </footer>
+    </div>
+    <script>
+        // Chinese for Chinese browsers, English otherwise; a choice made here is remembered.
+        const root = document.documentElement;
+        function setLang(lang) {
+            root.lang = lang;
+            document.querySelectorAll('[data-set-lang]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.setLang === lang)));
+            document.querySelectorAll('[data-href-zh]').forEach((a) => {
+                a.dataset.hrefEn ??= a.getAttribute('href');
+                a.setAttribute('href', lang === 'en' ? a.dataset.hrefEn : a.dataset.hrefZh);
+            });
+        }
+        let saved = null;
+        try { saved = localStorage.getItem('lang'); } catch {}
+        setLang(saved || (navigator.language.toLowerCase().startsWith('zh') ? 'zh-Hans' : 'en'));
+        document.querySelectorAll('[data-set-lang]').forEach((b) => b.addEventListener('click', () => {
+            setLang(b.dataset.setLang);
+            try { localStorage.setItem('lang', b.dataset.setLang); } catch {}
+        }));
+    </script>
+</body>
+</html>
